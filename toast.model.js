@@ -2,18 +2,28 @@ const fs = require("fs");
 const {questions} = require("./utilities");
 
 function saveNewUser(userId, jsonUserData) {
-    let newUser = {userId: userId, collaborators: []};
-    jsonUserData.users.push(newUser);
-    const jsonString = JSON.stringify(jsonUserData, null, 4);
+  if (!jsonUserData || !jsonUserData.users) {
+    console.error(
+      'jsonUserData non è definito o non contiene la proprietà "users"'
+    );
+    return null; // o gestisci l'errore in modo appropriato per la tua logica
+  }
 
-    fs.writeFile('users.json', jsonString, 'utf8', (err) => {
-        if (err) {
-            console.error('Errore durante l\'aggiunta di un nuovo utente del file:', err);
-        } else {
-            console.log('Nuovo utente aggiunto con successo!');
-        }
-    });
-    return newUser;
+  let newUser = { userId: userId, collaborators: [] };
+  jsonUserData.users.push(newUser);
+  const jsonString = JSON.stringify(jsonUserData, null, 4);
+
+  fs.writeFile("users.json", jsonString, "utf8", (err) => {
+    if (err) {
+      console.error(
+        "Errore durante l'aggiunta di un nuovo utente del file:",
+        err
+      );
+    } else {
+      console.log("Nuovo utente aggiunto con successo!");
+    }
+  });
+  return newUser;
 }
 
 function updateMap(interaction, index, gamma, smellValues) {
@@ -29,22 +39,37 @@ function updateMap(interaction, index, gamma, smellValues) {
 }
 
 function saveNewCollaborator(userId, name, surname, id, jsonUserData) {
-    let user = jsonUserData.users.find((el) => {
-        return el.userId === userId
-    });
+  if (!jsonUserData || !jsonUserData.users) {
+    console.error(
+      'jsonUserData non è definito o non contiene la proprietà "users"'
+    );
+    return; // o gestisci l'errore in modo appropriato per la tua logica
+  }
 
-    let collaborator = {name: name, surname: surname, collaboratorId: id};
+  let user = jsonUserData.users.find((el) => {
+    return el.userId === userId;
+  });
 
-    user.collaborators.push(collaborator);
-    const jsonString = JSON.stringify(jsonUserData, null, 4);
+  if (!user) {
+    console.error("Utente non trovato");
+    return; // o gestisci l'errore in modo appropriato per la tua logica
+  }
 
-    fs.writeFile('users.json', jsonString, 'utf8', (err) => {
-        if (err) {
-            console.error('Errore durante l\'aggiunta di un nuovo utente del file:', err);
-        } else {
-            console.log('Nuovo utente aggiunto con successo!');
-        }
-    });
+  let collaborator = { name: name, surname: surname, collaboratorId: id };
+
+  user.collaborators.push(collaborator);
+  const jsonString = JSON.stringify(jsonUserData, null, 4);
+
+  fs.writeFile("users.json", jsonString, "utf8", (err) => {
+    if (err) {
+      console.error(
+        "Errore durante l'aggiunta di un nuovo utente del file:",
+        err
+      );
+    } else {
+      console.log("Nuovo utente aggiunto con successo!");
+    }
+  });
 }
 
 module.exports.saveNewUser = saveNewUser;

@@ -4,6 +4,7 @@
   "description": "un semplice bot da utilizzare per le validazioni dei contributor in una community open source",
   "main": "toast.js",
   "scripts": {
+    "start": "node toast.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -20,6 +21,8 @@
   "dependencies": {
     "@discordjs/rest": "^2.0.0",
     "discord.js": "^14.12.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2"
   }
 }
