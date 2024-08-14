@@ -1,0 +1,39 @@
+{
+    "users": [
+        {
+            "userId": "671036556550864906",
+            "collaborators": [
+                {
+                    "name": "Ferdinando",
+                    "surname": "Boccia",
+                    "collaboratorId": "12345"
+                },
+                {
+                    "name": "prova",
+                    "surname": "prova",
+                    "collaboratorId": "99999"
+                },
+                {
+                    "name": "prova",
+                    "surname": "prova",
+                    "collaboratorId": "12345"
+                }
+            ]
+        },
+        {
+            "userId": "1024690525648998400",
+            "collaborators": [
+                {
+                    "name": "pippo",
+                    "surname": "franco",
+                    "collaboratorId": "123344"
+                },
+                {
+                    "name": "pio",
+                    "surname": "pippo",
+                    "collaboratorId": "pio"
+                }
+            ]
+        }
+    ]
+}
