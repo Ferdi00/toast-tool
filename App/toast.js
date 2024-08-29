@@ -2,6 +2,11 @@ const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
 const {
+  saveNewUser,
+  saveNewCollaborator,
+  updateMap,
+} = require("./toast.model");
+const {
   Client,
   GatewayIntentBits,
   Routes,
@@ -12,6 +17,7 @@ const {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
+  getUserAgentAppendix,
 } = require("discord.js");
 
 const session = require("express-session");
@@ -62,7 +68,7 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
       callbackURL: process.env.DISCORD_CALLBACK_URL,
-      scope: ["identify", "email", "guilds"],
+      scope: ['identify', 'guilds'],
     },
     (accessToken, refreshToken, profile, done) => {
       console.log("Access Token:", accessToken);
@@ -133,6 +139,7 @@ async function startBot() {
       // if the interaction is a button interaction
       else if (interaction.isButton()) {
         await executeInteractionButtons(smellValues, interaction);
+        console.log("mario"+ interaction.customId);
       }
       // if the interaction is a select menu interaction
       else if (interaction.isStringSelectMenu()) {
@@ -162,6 +169,54 @@ app.get("/", (req, res) => {
       return;
     }
     res.send(data); // Invia il contenuto HTML come risposta
+  });
+});
+
+// Rotta per eseguire l'analisi
+app.get("/analyze", (req, res) => {
+  //json che contiene le risposte fornite dall'utente e il suo id
+  let simulatePath = path.join(__dirname,"interactionData.json");
+  fs.readFile(simulatePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+    const interactionData = JSON.parse(data);
+    // estraggo i valori dal json
+    const userId = interactionData.userId;
+    var customIds= new Array();
+    customIds.push(interactionData.ans1);
+    customIds.push(interactionData.ans2);
+    customIds.push(interactionData.ans3);
+    customIds.push(interactionData.ans4);
+    customIds.push(interactionData.ans5);
+    customIds.push(interactionData.ans6);
+    simMap = new Map();
+    // creo un interazione fittizia per ogni risposta ricavata dal file
+    for(let index=0;index<6;index++)
+    {
+    const fakeInteraction = {
+      user: {
+        id: userId,
+      },
+      customId: customIds.at(index)
+    }
+      //aggiorno la mappa 
+      updateMap(fakeInteraction, index, gamma, simMap);
+    }
+
+    // estraggo i dati del collaboratore analizzato 
+    let values = simMap.get(userId);
+    let message;
+    for (let value of values) {
+      let smellAcr = value[0];
+      let smellValue = value[1];
+      const smellName = smellsNames[smellAcr];
+      message+=" nameSmell "+smellName+" smellValue "+smellValue+"\n";
+      //stampo i risultati sulla console
+      console.log(message);
+    }
+
   });
 });
 
@@ -206,6 +261,66 @@ app.get("/auth/discord/callback",
 // Rotta per il profilo dell'utente autenticato
 app.get("/profile", ensureAuthenticated, (req, res) => {
   res.send(`<h1>Hello, ${req.user.username}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
+});
+
+// Rotta per aggiungere collaboratori
+app.get("/addCollaborator", ensureAuthenticated, (req, res) => {
+  //json che contiene il collaboratore da aggiungere
+  let simulatePath = path.join(__dirname,"collaboratorData.json");
+  fs.readFile(simulatePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+    const collaboratorData = JSON.parse(data);
+    // estraggo i valori dal json
+    const userId = collaboratorData.userId;
+    console.log(userId);
+    const id = collaboratorData.userCollaborator;
+    const name = collaboratorData.name;
+    const surname = collaboratorData.surname;
+    //leggo il file locale con tutti gli utenti 
+    const userData = fs.readFileSync("users.json", "utf8");
+    jsonUserData = JSON.parse(userData);
+    //salvo il nuovo collaboratore
+    saveNewCollaborator(userId, name, surname, id, jsonUserData);
+  res.send(`<h1>Hello, ${req.user}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
+});
+});
+
+// Rotta per ricavare i collaboratori dell'utente
+app.get("/getCollaborators", ensureAuthenticated, (req, res) => {
+  //json che contiene l'id dell'utente 
+  let simulatePath = path.join(__dirname,"collaboratorData.json");
+  fs.readFile(simulatePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+    const collaboratorData = JSON.parse(data);
+    //estraggo i valori dal json
+    const userId = collaboratorData.userId;
+
+    //leggo il file degli utenti 
+    const userData = fs.readFileSync("users.json", "utf8");
+    jsonUserData = JSON.parse(userData);
+
+    //cerco l'utente in base all'id
+    const user = jsonUserData.users.find(user => user.userId === userId);
+    if (user) {
+      console.log(`Collaborators for user ID ${userId}:`);
+      //stampo i dati di tutti i collaboratori 
+      user.collaborators.forEach(collaborator => {
+          console.log(`Name: ${collaborator.name}`);
+          console.log(`Surname: ${collaborator.surname}`);
+          console.log(`Collaborator ID: ${collaborator.collaboratorId}`);
+          console.log('---'); // Separatore tra collaboratori
+      });
+     } else {
+      console.log(`No user found with ID ${userId}`);
+      }
+  res.send(`<h1>Hello, ${req.user}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
+});
 });
 
 // Logout

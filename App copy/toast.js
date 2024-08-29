@@ -55,11 +55,11 @@ app.use(session({
 // Inizializza Passport e la sessione
 app.use(passport.initialize());
 app.use(passport.session());
-console.log(process.env.CLIENT_ID)
+
 passport.use(
   new DiscordStrategy(
     {
-      clientID: process.env.CLIENT_ID,
+      clientID: process.env.CLIENTID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
       callbackURL: process.env.DISCORD_CALLBACK_URL,
       scope: ["identify", "email", "guilds"],

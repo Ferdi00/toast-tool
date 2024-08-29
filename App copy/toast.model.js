@@ -34,12 +34,9 @@ function updateMap(interaction, index, gamma, smellValues) {
   }
 
   let prevValue = userSmell.get(questions[index].smell) || 0;
-  console.log("customid passato dal file"+interaction.customId);
   let value =
     gamma[interaction.customId].value * questions[index].weight + prevValue;
-  console.log("valoresmell"+value);
   userSmell.set(questions[index].smell, value);
-  
 }
 
 function saveNewCollaborator(userId, name, surname, id, jsonUserData) {
@@ -49,13 +46,13 @@ function saveNewCollaborator(userId, name, surname, id, jsonUserData) {
     );
     return; // o gestisci l'errore in modo appropriato per la tua logica
   }
-  
+
   let user = jsonUserData.users.find((el) => {
     return el.userId === userId;
   });
 
   if (!user) {
-    console.error("Utente non trovato" + userId);
+    console.error("Utente non trovato");
     return; // o gestisci l'errore in modo appropriato per la tua logica
   }
 

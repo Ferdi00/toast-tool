@@ -1,16 +1,6 @@
 {
     "users": [
         {
-            "userId": "1229358951695646763",
-            "collaborators": [
-                {
-                    "name": "Ferdinando",
-                    "surname": "Boccia",
-                    "collaboratorId": "12345"
-                }
-            ]
-        },
-        {
             "userId": "671036556550864906",
             "collaborators": [
                 {
@@ -42,11 +32,6 @@
                     "name": "pio",
                     "surname": "pippo",
                     "collaboratorId": "pio"
-                },
-                {
-                    "name": "kmnqkn",
-                    "surname": "akjnajan",
-                    "collaboratorId": "ananajunaua"
                 }
             ]
         }

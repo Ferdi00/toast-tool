@@ -21,7 +21,7 @@
   "dependencies": {
     "@discordjs/rest": "^2.0.0",
     "discord.js": "^14.12.1",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.18.0",
