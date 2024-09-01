@@ -74,9 +74,17 @@
             cursor: pointer;
             font-size: 18px;
             transition: background-color 0.3s ease;
+            margin-bottom: 10px; /* Margine per separare i pulsanti */
         }
         button:hover {
             background-color: #0056b3;
+        }
+        .back-home-button {
+            background-color: #6c757d; /* Colore grigio */
+            margin-top: 10px; /* Margine superiore */
+        }
+        .back-home-button:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -146,6 +154,8 @@
             </table>
             <button type="submit">Submit Evaluation</button>
         </form>
+        <!-- Pulsante per tornare alla home -->
+        <button class="back-home-button" onclick="location.href='/backHome'">Back to Home</button>
     </div>
 </body>
 </html>

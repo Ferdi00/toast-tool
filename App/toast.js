@@ -62,6 +62,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware per impostare l'utente autenticato come variabile locale
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.locals.user = req.user;
+  }
+  next();
+});
+
 passport.use(
   new DiscordStrategy(
     {
@@ -336,11 +344,41 @@ app.post("/addCollaborator", ensureAuthenticated, (req, res) => {
   // Salva il nuovo collaboratore 
   saveNewCollaborator(userId, name, surname, collaboratorId, jsonUserData);
   
-  res.redirect("/profile");
+  const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+  var modifiedData = data.replace("{{userid}}", res.locals.user.id)
+                           .replace("{{email}}", res.locals.user.email)
+                           .replace("{{username}}", res.locals.user.username)
+                           .replace("{{message}}", "Collaboratore con id:"+ collaboratorId + " aggiunto correttamente");
+  res.send(modifiedData);
+  //res.redirect('/profile');
+});
+});
+
+// Rotta per tornare alla home
+app.get("/backHome", ensureAuthenticated, (req, res) => {
+  const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+  var modifiedData = data.replace("{{userid}}", res.locals.user.id)
+                           .replace("{{email}}", res.locals.user.email)
+                           .replace("{{username}}", res.locals.user.username);
+  res.send(modifiedData);
+});
 });
 
 // Rotta per ricavare i collaboratori dell'utente
 app.get("/getCollaborators", ensureAuthenticated, (req, res) => {
+  //leggo il file con tutti gli utenti 
+  const userData = fs.readFileSync("users.json", "utf8");
+  const jsonUserData = JSON.parse(userData);
    //cerco l'utente in base all'id
    const user = jsonUserData.users.find(user => user.userId === req.user.id);
    //invio i dati dell'utente e i suoi collaboratori 

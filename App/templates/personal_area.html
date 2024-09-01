@@ -26,6 +26,17 @@
             width: 100%;
         }
 
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            display: none; /* Nascondi il messaggio di default */
+        }
+
         h1 {
             text-align: center;
             color: #333;
@@ -156,6 +167,8 @@
 <body>
 
     <div class="container">
+        <div id="message" class="message">{{message}}</div>
+
         <h1>Welcome to Your Personal Area</h1>
 
         <div class="user-info">
@@ -180,6 +193,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Controllo se c'è un messaggio da visualizzare
+           const message = "{{message}}"; // Rimuovi trim() e qualsiasi altra manipolazione
+           const messageDiv = document.getElementById('message'); 
+           if (messageDiv.textContent == "{{message}}") {
+            messageDiv.style.display = 'none'; // nascondi il div
+           }
+           else {
+            messageDiv.style.display = 'block'; // mostra il div
+           }
+
             // Fetch dei collaboratori e visualizzazione delle card
             fetch('/getCollaborators')
                 .then(response => response.json())
