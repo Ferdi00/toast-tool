@@ -1,0 +1,184 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #1c1c1c;
+    border-bottom: 2px solid #444;
+    position: relative;
+    height: 60px;
+}
+
+header .left {
+    display: flex;
+    align-items: center;
+}
+
+header .home-icon {
+    font-size: 2em;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+header .home-icon:hover {
+    color: #ff6f61;
+}
+
+header .login-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6f61;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+header .login-button:hover {
+    background-color: #ff5a4d;
+}
+
+.movie-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-container {
+    justify-content: center;
+    border-radius: 0px 20px 20px 20px;
+    background-color: #303030;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.section-label {
+    border-radius: 10px 10px 0px 0px;
+    width: 20%;
+    color: #fff;
+    background-color: #ff6f61;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.movie-card {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 120px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 300px; /* Set a fixed height for consistency */
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+}
+
+.movie-info {
+    padding: 10px;
+    font-size: 14px;
+    flex-grow: 1; /* This makes sure movie-info takes up available space */
+}
+
+.movie-info h2 {
+    font-size: 1.1em;
+    margin: 0.5em 0;
+}
+
+.movie-info p {
+    margin: 0.3em 0;
+}
+
+.user-info {
+    border-radius: 20px;
+    background-color: #303030;
+    flex: 1;
+    margin-right: 20px;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-info img {
+    background-color: #8b8585;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    font-size: 1.3em;
+}
+
+.hidden {
+    display: none;
+}
+
+.see-more-button {
+    height: 1rem;
+    background-color: #ff6f61;
+    color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.5em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 40%;
+}
+
+.see-more-button:hover {
+    background-color: #ff5a4d;
+}
+
+.data-list {
+    width: 100px;;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 10px;
+    color: #f7f1f1;
+    background-color:#cb534b ;
+    border-top: 1px solid #444;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}

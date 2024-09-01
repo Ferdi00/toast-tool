@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Area</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+
+        .user-info {
+            margin-bottom: 40px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .user-info strong {
+            color: #333;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .collaborator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .collaborator-card {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease-in-out;
+            text-align: center;
+        }
+
+        .collaborator-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .collaborator-card p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .collaborator-card button {
+            background-color: #ffdd57;
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .collaborator-card button:hover {
+            background-color: #ffc107;
+        }
+
+        .add-collaborator-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .add-collaborator-button button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .add-collaborator-button button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .user-info p {
+                font-size: 14px;
+            }
+
+            .collaborator-card p {
+                font-size: 14px;
+            }
+
+            .collaborator-card button {
+                font-size: 14px;
+            }
+
+            .add-collaborator-button button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Welcome to Your Personal Area</h1>
+
+        <div class="user-info">
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Username:</strong> {{username}}</p>
+            <p><strong>Id:</strong> {{userid}}</p>
+        </div>
+
+        <h2>Your Collaborators:</h2>
+        <div id="collaborators-list" class="collaborator-grid">
+            <!-- Collaborator cards will be appended here -->
+        </div>
+
+        <h2>Add New Collaborator</h2>
+        <div class="add-collaborator-button">
+            <form action="/newCollaboratorPage" method="POST">
+                <input type="hidden" name="userId" value="{{userid}}">
+                <button type="submit">Add New Collaborator</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch dei collaboratori e visualizzazione delle card
+            fetch('/getCollaborators')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('collaborators-list');
+
+                    if (data.collaborators && data.collaborators.length > 0) {
+                        data.collaborators.forEach(collaborator => {
+                            const collaboratorDiv = document.createElement('div');
+                            collaboratorDiv.classList.add('collaborator-card');
+
+                            collaboratorDiv.innerHTML = `
+                                <p><strong>Name:</strong> ${collaborator.name}</p>
+                                <p><strong>Surname:</strong> ${collaborator.surname}</p>
+                                <p><strong>Collaborator ID:</strong> ${collaborator.collaboratorId}</p>
+                                <form id="rateForm" method="GET" action="/rateCollaborator">
+                                    <input type="hidden" name="collaboratorid" value="${collaborator.collaboratorId}" id="collaboratorid">
+                                    <input type="hidden" name="userid" value="${data.userId}" id="userid">
+                                    <button type="submit">Valuta</button>
+                                </form>
+                            `;
+
+                            container.appendChild(collaboratorDiv);
+                        });
+                    } else {
+                        container.innerHTML = '<p>No collaborators found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>

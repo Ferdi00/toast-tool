@@ -45,7 +45,7 @@ const {
 const app = express();
 const port = process.env.PORT || 3000;;
 const filePath = path.join(__dirname, "data.json");
-
+app.use(express.json());
 dotenv.config();
 
 // Variabile globale per i dati degli utenti
@@ -172,54 +172,61 @@ app.get("/", (req, res) => {
   });
 });
 
-// Rotta per eseguire l'analisi
-app.get("/analyze", (req, res) => {
-  //json che contiene le risposte fornite dall'utente e il suo id
-  let simulatePath = path.join(__dirname,"interactionData.json");
-  fs.readFile(simulatePath, "utf8", (err, data) => {
+app.use(express.urlencoded({ extended: true }));
+
+//rotta per analizzare un collaboraotre 
+app.post("/analyze", (req, res) => {
+  // Ottieni i dati dal body della richiesta
+  const interactionData = req.body;
+  // Estrai i valori dal body
+  const userId = interactionData.collaboratorId;
+  const customIds = [
+      interactionData.ans1,
+      interactionData.ans2,
+      interactionData.ans3,
+      interactionData.ans4,
+      interactionData.ans5,
+      interactionData.ans6
+  ];
+
+  // Creazione della mappa per simulare le interazioni
+  let simMap = new Map();
+
+  // Crea un'interazione fittizia per ogni risposta
+  for (let index = 0; index < customIds.length; index++) {
+      const fakeInteraction = {
+          user: {
+              id: userId,
+          },
+          customId: customIds[index]
+      };
+      // Aggiorna la mappa
+      updateMap(fakeInteraction, index, gamma, simMap);
+  }
+
+  // Estrai i dati del collaboratore analizzato
+  let values = simMap.get(userId) || [];
+
+  // Crea un array di oggetti smell 
+  const smells = Array.from(values, ([smellAcr, smellValue]) => {
+      const smellName = smellsNames[smellAcr]; // Assumendo che `smellsNames` sia definito
+      return { smellName, smellValue };
+  });
+  //preparo il file html con i risultati 
+  const htmlFilePath = path.join(__dirname, "templates", "result.html");
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-    const interactionData = JSON.parse(data);
-    // estraggo i valori dal json
-    const userId = interactionData.userId;
-    var customIds= new Array();
-    customIds.push(interactionData.ans1);
-    customIds.push(interactionData.ans2);
-    customIds.push(interactionData.ans3);
-    customIds.push(interactionData.ans4);
-    customIds.push(interactionData.ans5);
-    customIds.push(interactionData.ans6);
-    simMap = new Map();
-    // creo un interazione fittizia per ogni risposta ricavata dal file
-    for(let index=0;index<6;index++)
-    {
-    const fakeInteraction = {
-      user: {
-        id: userId,
-      },
-      customId: customIds.at(index)
-    }
-      //aggiorno la mappa 
-      updateMap(fakeInteraction, index, gamma, simMap);
-    }
+     // Sostituzione dei segnaposti nel contenuto HTML con i risultati dell'analisi
+     var modifiedData = data.replace("{{r1}}",smells[0].smellValue).replace("{{r2}}", 
+      smells[1].smellValue).replace("{{r3}}", smells[2].smellValue);
 
-    // estraggo i dati del collaboratore analizzato 
-    let values = simMap.get(userId);
-    let message;
-    for (let value of values) {
-      let smellAcr = value[0];
-      let smellValue = value[1];
-      const smellName = smellsNames[smellAcr];
-      message+=" nameSmell "+smellName+" smellValue "+smellValue+"\n";
-      //stampo i risultati sulla console
-      console.log(message);
-    }
-
-  });
+     // Invia il contenuto HTML modificato come risposta
+     res.send(modifiedData);
 });
-
+});
 
 // Rotta per leggere e restituire il contenuto del file JSON
 app.get("/newUser", (req, res) => {
@@ -246,7 +253,6 @@ app.get("/newUser", (req, res) => {
 });
 
 
-
 // Rotta per il login con Discord
 app.get("/login", passport.authenticate("discord"));
 
@@ -260,67 +266,89 @@ app.get("/auth/discord/callback",
 
 // Rotta per il profilo dell'utente autenticato
 app.get("/profile", ensureAuthenticated, (req, res) => {
-  res.send(`<h1>Hello, ${req.user.username}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
-});
-
-// Rotta per aggiungere collaboratori
-app.get("/addCollaborator", ensureAuthenticated, (req, res) => {
-  //json che contiene il collaboratore da aggiungere
-  let simulatePath = path.join(__dirname,"collaboratorData.json");
-  fs.readFile(simulatePath, "utf8", (err, data) => {
+  const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-    const collaboratorData = JSON.parse(data);
-    // estraggo i valori dal json
-    const userId = collaboratorData.userId;
-    console.log(userId);
-    const id = collaboratorData.userCollaborator;
-    const name = collaboratorData.name;
-    const surname = collaboratorData.surname;
-    //leggo il file locale con tutti gli utenti 
-    const userData = fs.readFileSync("users.json", "utf8");
-    jsonUserData = JSON.parse(userData);
-    //salvo il nuovo collaboratore
-    saveNewCollaborator(userId, name, surname, id, jsonUserData);
-  res.send(`<h1>Hello, ${req.user}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
+     // Sostituzione di un segnaposto nel contenuto HTML con il valore di req.userId
+     var modifiedData = data.replace("{{userid}}",req.user.id).replace("{{email}}", 
+      req.user.email).replace("{{username}}", req.user.username).replace("{{userid}}",req.user.id);
+
+     // Invia il contenuto HTML modificato come risposta
+     res.send(modifiedData);
+  });
 });
+
+// Rotta per ottenre la pagina che consente l'aggiunta di un nuovo collaboratore
+app.post("/newCollaboratorPage", ensureAuthenticated, (req, res) => {
+  //preparo la pagina
+  const htmlFilePath = path.join(__dirname, "templates", "newCollaboratorPage.html");
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+    //prendo lo userId dalla richiesta
+    const {userId} = req.body;
+     // Sostituzione di un segnaposto nel contenuto HTML con il valore di userId
+     var modifiedData = data.replace("{{userId}}",userId);
+     // Invia il contenuto HTML modificato come risposta
+     res.send(modifiedData);
+  });
+});
+
+// Rotta per ottenre la pagina html che permette la valutazione del collaboratore
+app.get('/rateCollaborator', (req, res) => {
+  //preparo la pagina html
+  const htmlFilePath = path.join(__dirname, 'templates', 'assessement.html');
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+    //estraggo i parametri passati dalla richiesta 
+    var url_parts = require('url').parse(req.url, true);
+
+     // Sostituzione dei segnaposti nel contenuto HTML con l'ide del collaboratore e quello dell'utente
+     var modifiedData = data.replace("{{userId}}",url_parts.query.userid).replace("{{collaboratorId}}", 
+      url_parts.query.collaboratorid);
+
+     // Invia il contenuto HTML modificato come risposta
+     res.send(modifiedData);
+
+});
+});
+
+// Rotta per aggiungere collaboratori
+app.post("/addCollaborator", ensureAuthenticated, (req, res) => {
+  // Ottieni i parametri dal corpo della richiesta POST
+  const { userId, collaboratorId, name, surname } = req.body;
+  // Verifica che tutti i parametri siano stati ricevuti
+  if (!userId || !collaboratorId || !name || !surname) {
+      return res.status(400).send("Missing required fields"+userId+collaboratorId+name+surname);
+  }
+  // Leggi il file locale con tutti gli utenti
+  const userData = fs.readFileSync("users.json", "utf8");
+  const jsonUserData = JSON.parse(userData);
+
+  // Salva il nuovo collaboratore 
+  saveNewCollaborator(userId, name, surname, collaboratorId, jsonUserData);
+  
+  res.redirect("/profile");
 });
 
 // Rotta per ricavare i collaboratori dell'utente
 app.get("/getCollaborators", ensureAuthenticated, (req, res) => {
-  //json che contiene l'id dell'utente 
-  let simulatePath = path.join(__dirname,"collaboratorData.json");
-  fs.readFile(simulatePath, "utf8", (err, data) => {
-    if (err) {
-      res.status(500).send("Error reading the file");
-      return;
-    }
-    const collaboratorData = JSON.parse(data);
-    //estraggo i valori dal json
-    const userId = collaboratorData.userId;
-
-    //leggo il file degli utenti 
-    const userData = fs.readFileSync("users.json", "utf8");
-    jsonUserData = JSON.parse(userData);
-
-    //cerco l'utente in base all'id
-    const user = jsonUserData.users.find(user => user.userId === userId);
-    if (user) {
-      console.log(`Collaborators for user ID ${userId}:`);
-      //stampo i dati di tutti i collaboratori 
-      user.collaborators.forEach(collaborator => {
-          console.log(`Name: ${collaborator.name}`);
-          console.log(`Surname: ${collaborator.surname}`);
-          console.log(`Collaborator ID: ${collaborator.collaboratorId}`);
-          console.log('---'); // Separatore tra collaboratori
-      });
-     } else {
-      console.log(`No user found with ID ${userId}`);
-      }
-  res.send(`<h1>Hello, ${req.user}!</h1><pre>${JSON.stringify(req.user, null, 2)}</pre>`);
-});
+   //cerco l'utente in base all'id
+   const user = jsonUserData.users.find(user => user.userId === req.user.id);
+   //invio i dati dell'utente e i suoi collaboratori 
+   if (user) {
+    res.json({ userId: req.user.id, collaborators: user.collaborators });
+   } else {
+    res.status(404).send("User not found");
+   }
 });
 
 // Logout
