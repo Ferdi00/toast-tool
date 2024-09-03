@@ -109,7 +109,8 @@
     <div class="container">
         <h1>Add New Collaborator</h1>
 
-        <form class="collaborator-form" method="POST" action="/addCollaborator">
+        <form class="collaborator-form" method="POST" action="/saveCollaboratorAPI">
+            <input type="text" id="userId" name="userId" placeholder="User Id" required>
             <input type="text" id="collaboratorId" name="collaboratorId" placeholder="Collaborator ID" required>
             <input type="text" id="name" name="name" placeholder="Name" required>
             <input type="text" id="surname" name="surname" placeholder="Surname" required>

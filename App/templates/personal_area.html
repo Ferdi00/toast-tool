@@ -185,7 +185,6 @@
         <h2>Add New Collaborator</h2>
         <div class="add-collaborator-button">
             <form action="/newCollaboratorPage" method="POST">
-                <input type="hidden" name="userId" value="{{userid}}">
                 <button type="submit">Add New Collaborator</button>
             </form>
         </div>
@@ -218,10 +217,9 @@
                                 <p><strong>Name:</strong> ${collaborator.name}</p>
                                 <p><strong>Surname:</strong> ${collaborator.surname}</p>
                                 <p><strong>Collaborator ID:</strong> ${collaborator.collaboratorId}</p>
-                                <form id="rateForm" method="GET" action="/rateCollaborator">
+                                <form id="rateForm" method="POST" action="/rateCollaborator">
                                     <input type="hidden" name="collaboratorid" value="${collaborator.collaboratorId}" id="collaboratorid">
-                                    <input type="hidden" name="userid" value="${data.userId}" id="userid">
-                                    <button type="submit">Valuta</button>
+                                    <button type="submit">Rate</button>
                                 </form>
                             `;
 

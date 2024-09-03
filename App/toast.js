@@ -163,6 +163,38 @@ async function startBot() {
   }
 }
 
+// Utilizzato per chiamare le rotte che fanno da API
+const axios = require('axios'); 
+
+// Utilizzato per la gestione dei token
+const jwt = require('jsonwebtoken');
+
+function generateAuthToken(user) {
+    // Definisci un payload che contiene le informazioni dell'utente
+    const payload = {
+        id: user.id,
+        username: user.username,
+        email: user.email
+    };
+
+    // Firma il token con una chiave segreta
+    const secretKey = 'yourSecretKey'; 
+    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+
+    return token;
+}
+
+// Funzione per verificare il token
+function validateAuthToken(token) {
+  try {
+      const secretKey = 'yourSecretKey'; 
+      const decoded = jwt.verify(token, secretKey);
+      return decoded;
+  } catch (err) {
+      return null;
+  }
+}
+
 // Avvio del server Express e del bot Discord
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
@@ -182,12 +214,10 @@ app.get("/", (req, res) => {
 
 app.use(express.urlencoded({ extended: true }));
 
-//rotta per analizzare un collaboraotre 
-app.post("/analyze", (req, res) => {
-  // Ottieni i dati dal body della richiesta
+// API per analizzare il collaboratore e restituire i dati in JSON
+app.post("/analyzeCollaboratorAPI", (req, res) => {
   const interactionData = req.body;
-  // Estrai i valori dal body
-  const userId = interactionData.collaboratorId;
+  const userId = "userGenerico";
   const customIds = [
       interactionData.ans1,
       interactionData.ans2,
@@ -196,6 +226,13 @@ app.post("/analyze", (req, res) => {
       interactionData.ans5,
       interactionData.ans6
   ];
+  // Verifica che tutti i parametri siano stati ricevuti
+  for (let index = 0; index < customIds.length; index++) {
+      if (!customIds[index]) {
+           console.log("sono nel for"+index);
+          return res.status(400).json({ error: "Missing required fields" });
+      }
+  }
 
   // Creazione della mappa per simulare le interazioni
   let simMap = new Map();
@@ -203,9 +240,7 @@ app.post("/analyze", (req, res) => {
   // Crea un'interazione fittizia per ogni risposta
   for (let index = 0; index < customIds.length; index++) {
       const fakeInteraction = {
-          user: {
-              id: userId,
-          },
+          user: { id: userId },
           customId: customIds[index]
       };
       // Aggiorna la mappa
@@ -217,23 +252,44 @@ app.post("/analyze", (req, res) => {
 
   // Crea un array di oggetti smell 
   const smells = Array.from(values, ([smellAcr, smellValue]) => {
-      const smellName = smellsNames[smellAcr]; // Assumendo che `smellsNames` sia definito
+      const smellName = smellsNames[smellAcr]; 
       return { smellName, smellValue };
   });
-  //preparo il file html con i risultati 
-  const htmlFilePath = path.join(__dirname, "templates", "result.html");
-  fs.readFile(htmlFilePath, "utf8", (err, data) => {
-    if (err) {
-      res.status(500).send("Error reading the file");
-      return;
-    }
-     // Sostituzione dei segnaposti nel contenuto HTML con i risultati dell'analisi
-     var modifiedData = data.replace("{{r1}}",smells[0].smellValue).replace("{{r2}}", 
-      smells[1].smellValue).replace("{{r3}}", smells[2].smellValue);
 
-     // Invia il contenuto HTML modificato come risposta
-     res.send(modifiedData);
+  // Restituisci i risultati dell'analisi in formato JSON
+  res.json({ smells });
 });
+
+// Rotta per analizzare il collaboratore e preparare la risposta HTML
+app.post("/analyze", (req, res) => {
+  // Invia la richiesta alla rotta /analyzeCollaborator per eseguire l'analisi
+  axios.post("http://localhost:3000/analyzeCollaboratorAPI", req.body)
+      .then(response => {
+          const smells = response.data.smells;
+
+          // Prepara il file HTML con i risultati dell'analisi
+          const htmlFilePath = path.join(__dirname, "templates", "result.html");
+          fs.readFile(htmlFilePath, "utf8", (err, data) => {
+              if (err) {
+                  return res.status(500).send("Error reading the file");
+              }
+
+              // Sostituzione dei segnaposti nel contenuto HTML con i risultati dell'analisi
+              let modifiedData = data;
+              for (let i = 0; i < smells.length; i++) {
+                  modifiedData = modifiedData.replace(`{{r${i + 1}}}`, smells[i].smellValue);
+              }
+              for (let i = 0; i < smells.length; i++) {
+                modifiedData = modifiedData.replace(`{{r${i + 1}}}`, smells[i].smellValue);
+            }
+
+              // Invia il contenuto HTML modificato come risposta
+              res.send(modifiedData);
+          });
+      })
+      .catch(err => {
+          res.status(500).send("Error analyzing collaborator");
+      });
 });
 
 // Rotta per leggere e restituire il contenuto del file JSON
@@ -260,7 +316,6 @@ app.get("/newUser", (req, res) => {
   });
 });
 
-
 // Rotta per il login con Discord
 app.get("/login", passport.authenticate("discord"));
 
@@ -268,120 +323,179 @@ app.get("/login", passport.authenticate("discord"));
 app.get("/auth/discord/callback",
   passport.authenticate("discord", { failureRedirect: "/" }),
   (req, res) => {
+    // Viene aggiunto alla sessione un token per le app esterne autenticate
+    req.session.token = generateAuthToken(req.user);
     res.redirect("/profile");
   }
 );
 
 // Rotta per il profilo dell'utente autenticato
 app.get("/profile", ensureAuthenticated, (req, res) => {
+  // Prepara la pagina html
   const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
   fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-     // Sostituzione di un segnaposto nel contenuto HTML con il valore di req.userId
-     var modifiedData = data.replace("{{userid}}",req.user.id).replace("{{email}}", 
-      req.user.email).replace("{{username}}", req.user.username).replace("{{userid}}",req.user.id);
+    // Sostituzione di un segnaposto nel contenuto HTML con il valore di req.userId
+    var modifiedData = data.replace("{{userid}}",req.user.id).replace("{{email}}", 
+    req.user.email).replace("{{username}}", req.user.username).replace("{{userid}}",req.user.id);
 
-     // Invia il contenuto HTML modificato come risposta
-     res.send(modifiedData);
+    // Invia il contenuto HTML modificato come risposta
+    res.send(modifiedData);
   });
 });
 
 // Rotta per ottenre la pagina che consente l'aggiunta di un nuovo collaboratore
 app.post("/newCollaboratorPage", ensureAuthenticated, (req, res) => {
-  //preparo la pagina
+  // Prepara la pagina
   const htmlFilePath = path.join(__dirname, "templates", "newCollaboratorPage.html");
   fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-    //prendo lo userId dalla richiesta
-    const {userId} = req.body;
-     // Sostituzione di un segnaposto nel contenuto HTML con il valore di userId
-     var modifiedData = data.replace("{{userId}}",userId);
-     // Invia il contenuto HTML modificato come risposta
-     res.send(modifiedData);
+     // Invia il contenuto HTML 
+     res.send(data);
   });
 });
 
 // Rotta per ottenre la pagina html che permette la valutazione del collaboratore
-app.get('/rateCollaborator', (req, res) => {
-  //preparo la pagina html
+app.post("/rateCollaborator", ensureAuthenticated, (req, res) => {
+  // Prepara la pagina html
   const htmlFilePath = path.join(__dirname, 'templates', 'assessement.html');
   fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-    //estraggo i parametri passati dalla richiesta 
-    var url_parts = require('url').parse(req.url, true);
-
-     // Sostituzione dei segnaposti nel contenuto HTML con l'ide del collaboratore e quello dell'utente
-     var modifiedData = data.replace("{{userId}}",url_parts.query.userid).replace("{{collaboratorId}}", 
-      url_parts.query.collaboratorid);
+    // Estrai i parametri passati dalla richiesta 
+    const {collaboratorid} = req.body;
+    // Verifica che tutti i parametri siano stati ricevuti
+    if (!collaboratorid) {
+      return res.status(400).send("Missing required fields");
+    }
+     // Sostituzione dei segnaposti nel contenuto HTML con l'id del collaboratore e quello dell'utente
+    var modifiedData = data.replace("{{collaboratorId}}", collaboratorid);
 
      // Invia il contenuto HTML modificato come risposta
-     res.send(modifiedData);
-
+    res.send(modifiedData);
 });
 });
 
-// Rotta per aggiungere collaboratori
-app.post("/addCollaborator", ensureAuthenticated, (req, res) => {
-  // Ottieni i parametri dal corpo della richiesta POST
-  const { userId, collaboratorId, name, surname } = req.body;
-  // Verifica che tutti i parametri siano stati ricevuti
-  if (!userId || !collaboratorId || !name || !surname) {
-      return res.status(400).send("Missing required fields"+userId+collaboratorId+name+surname);
+// Pagina per simulare app esterna che usa l'api per l'analisi 
+app.get("/externalRateCollaborator", (req, res) => {
+  // Prepara la pagina html
+  const htmlFilePath = path.join(__dirname, 'templates', 'externalAssessement.html');
+  fs.readFile(htmlFilePath, "utf8", (err, data) => {
+    if (err) {
+      res.status(500).send("Error reading the file");
+      return;
+    }
+     // Invia il contenuto HTML modificato come risposta
+     res.send(data);
+});
+});
+
+// API per salvare il collaboratore e restituire i dati in JSON
+app.post("/saveCollaboratorAPI", (req, res) => {
+  // Token per le app esterne 
+  var token = req.session.token;
+  // Estrai gli altri parametri 
+  var userId = req.body.userId;
+  var collaboratorId = req.body.collaboratorId;
+  var name = req.body.name;
+  var surname = req.body.surname;
+
+  if(!token){
+    // L'app web utilizza un token passato nella richiesta 
+    token = req.body.token;
   }
+  // Funzione per validare il token
+  if (!validateAuthToken(token)) { 
+    return res.status(401).json({ success: false, message: "Autenticazione richiesta" });
+  }
+  // Verifica che tutti i parametri siano stati ricevuti
+  if (!userId || !collaboratorId || !name || !surname || !token) {
+      return res.status(400).json({ error: "Missing required fields" });
+  }
+
   // Leggi il file locale con tutti gli utenti
   const userData = fs.readFileSync("users.json", "utf8");
   const jsonUserData = JSON.parse(userData);
 
-  // Salva il nuovo collaboratore 
+  // Salva il nuovo collaboratore
   saveNewCollaborator(userId, name, surname, collaboratorId, jsonUserData);
-  
-  const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
-  fs.readFile(htmlFilePath, "utf8", (err, data) => {
-    if (err) {
-      res.status(500).send("Error reading the file");
-      return;
-    }
-  var modifiedData = data.replace("{{userid}}", res.locals.user.id)
-                           .replace("{{email}}", res.locals.user.email)
-                           .replace("{{username}}", res.locals.user.username)
-                           .replace("{{message}}", "Collaboratore con id:"+ collaboratorId + " aggiunto correttamente");
-  res.send(modifiedData);
-  //res.redirect('/profile');
-});
+
+  // Restituisci un JSON con i dettagli del collaboratore aggiunto
+  res.json({
+      success: true,
+      message: `Collaboratore con id: ${collaboratorId} aggiunto correttamente`,
+      collaborator: {
+          id: collaboratorId,
+          name: name,
+          surname: surname
+      }
+  });
 });
 
-// Rotta per tornare alla home
-app.get("/backHome", ensureAuthenticated, (req, res) => {
-  const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
+// Rotta principale per aggiungere collaboratori e preparare la risposta HTML
+app.post("/addCollaborator", ensureAuthenticated, (req, res) => {
+  // Genera un token per utilizzare l'API 
+  const authToken = generateAuthToken(req.user); 
+  // Aggiungi il token e l'id dell'utente al body della richiesta
+  req.body.token = authToken; 
+  req.body.userId = req.user.id; 
+  // Invia la richiesta alla rotta /saveCollaboratorAPI per salvare il collaboratore
+  axios.post("http://localhost:3000/saveCollaboratorAPI", req.body)
+      .then(response => {
+          // Estrai i dati JSON dalla risposta
+          const { collaborator, message } = response.data;
+
+          // Prepara la home con un messaggio che conferma l'aggiunta del collaboratore
+          const htmlFilePath = path.join(__dirname, "templates", "personal_area.html");
+          fs.readFile(htmlFilePath, "utf8", (err, data) => {
+              if (err) {
+                  return res.status(500).send("Error reading the file");
+              }
+              // Sostituzione dei segnaposti nel contenuto HTML con i dati dell'utente e il messaggio
+              var modifiedData = data.replace("{{userid}}", req.user.id)
+                                     .replace("{{email}}", req.user.email)
+                                     .replace("{{username}}", req.user.username)
+                                     .replace("{{message}}", message);
+              
+              // Invia il contenuto HTML modificato come risposta
+              res.send(modifiedData);
+          });
+      })
+      .catch(err => {
+          res.status(500).send("Error saving collaborator");
+      });
+});
+
+// Pagina per simulare app esterna che salva un collaboratore (autenticazione richiesta)
+app.get("/externalAddCollaborator" ,(req, res) => {
+  // Prepara la pagina html
+  const htmlFilePath = path.join(__dirname, 'templates', 'externalNewCollaboratorPage.html');
   fs.readFile(htmlFilePath, "utf8", (err, data) => {
     if (err) {
       res.status(500).send("Error reading the file");
       return;
     }
-  var modifiedData = data.replace("{{userid}}", res.locals.user.id)
-                           .replace("{{email}}", res.locals.user.email)
-                           .replace("{{username}}", res.locals.user.username);
-  res.send(modifiedData);
+     // Invia il contenuto HTML modificato come risposta
+     res.send(data);
 });
 });
 
 // Rotta per ricavare i collaboratori dell'utente
 app.get("/getCollaborators", ensureAuthenticated, (req, res) => {
-  //leggo il file con tutti gli utenti 
+  // Leggi il file con tutti gli utenti 
   const userData = fs.readFileSync("users.json", "utf8");
   const jsonUserData = JSON.parse(userData);
-   //cerco l'utente in base all'id
+   // Cerca l'utente in base all'id
    const user = jsonUserData.users.find(user => user.userId === req.user.id);
-   //invio i dati dell'utente e i suoi collaboratori 
+   // Invia i dati dell'utente e i suoi collaboratori 
    if (user) {
     res.json({ userId: req.user.id, collaborators: user.collaborators });
    } else {
