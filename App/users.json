@@ -14,9 +14,19 @@
                     "collaboratorId": "99999"
                 },
                 {
-                    "name": "prova",
-                    "surname": "prova",
-                    "collaboratorId": "12345"
+                    "name": "aaa",
+                    "surname": "bbb",
+                    "collaboratorId": "1234"
+                },
+                {
+                    "name": "fedfwfdew",
+                    "surname": "ewefwdewqd",
+                    "collaboratorId": "1324234"
+                },
+                {
+                    "name": "dd",
+                    "surname": "dd",
+                    "collaboratorId": "1234"
                 }
             ]
         },
@@ -32,8 +42,162 @@
                     "name": "pio",
                     "surname": "pippo",
                     "collaboratorId": "pio"
+                },
+                {
+                    "name": "klgklffgklfkl",
+                    "surname": "jsdjfvsdkl",
+                    "collaboratorId": "ldsknfsldfnk"
                 }
             ]
+        },
+        {
+            "userId": "79795875092461233205",
+            "username": "user_1727451906042",
+            "email": "user_1727451906042@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "80293096998395403047",
+            "username": "user_1727452015441",
+            "email": "user_1727452015441@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "07367626766001394373",
+            "username": "user_1727452575125",
+            "email": "user_1727452575125@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "12029652853033424062",
+            "username": "user_1727452904466",
+            "email": "user_1727452904466@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "86692198858237149779",
+            "username": "user_1727453173422",
+            "email": "user_1727453173422@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "45325699826988254602",
+            "username": "user_1727453315663",
+            "email": "user_1727453315663@prova.it",
+            "password": "user1",
+            "collaborators": [
+                {
+                    "name": "New",
+                    "surname": "Collaborator",
+                    "collaboratorId": "8"
+                },
+                {
+                    "name": "New",
+                    "surname": "Collaborator",
+                    "collaboratorId": "8"
+                }
+            ]
+        },
+        {
+            "userId": "34489669030307573336",
+            "username": "user_1727517070069",
+            "email": "user_1727517070069@prova.it",
+            "password": "user1",
+            "collaborators": []
+        },
+        {
+            "userId": "79497614475984880832",
+            "username": "user_1727518615531",
+            "email": "user_1727518615531@prova.it",
+            "password": "user1",
+            "collaborators": [
+                {
+                    "name": "New",
+                    "surname": "Collaborator",
+                    "collaboratorId": "8"
+                },
+                {
+                    "name": "New",
+                    "surname": "Collaborator",
+                    "collaboratorId": "8"
+                }
+            ]
+        },
+        {
+            "userId": "93245550653887990916",
+            "username": "Ferdinando",
+            "email": "ferdi@gmail.com",
+            "password": "Ferdinando",
+            "collaborators": [
+                {
+                    "name": "Pippo",
+                    "surname": "Franco",
+                    "collaboratorId": "01"
+                },
+                {
+                    "name": "Pippo",
+                    "surname": "Franco",
+                    "collaboratorId": "01"
+                },
+                {
+                    "name": "Pippo",
+                    "surname": "Franco",
+                    "collaboratorId": "01"
+                },
+                {
+                    "name": "Pippo",
+                    "surname": "Franco",
+                    "collaboratorId": "01"
+                },
+                {
+                    "name": "Pippo",
+                    "surname": "Franco",
+                    "collaboratorId": "01"
+                }
+            ]
+        },
+        {
+            "userId": "1024690525648998400",
+            "collaborators": []
+        },
+        {
+            "userId": "15708552304870033094",
+            "username": "mario",
+            "email": "marioRisi@gmail.com",
+            "password": "12349087",
+            "collaborators": [
+                {
+                    "name": "Antonello",
+                    "surname": "Venditti",
+                    "collaboratorId": "01"
+                }
+            ]
+        },
+        {
+            "userId": "60552596473734452694",
+            "username": "boh",
+            "email": "boh@gmail.com",
+            "password": "1",
+            "collaborators": []
+        },
+        {
+            "userId": "96690276902815415851",
+            "username": "UtenteVuoto",
+            "email": "Utentevuoto@gmail.com",
+            "password": "utentevuoto",
+            "collaborators": []
+        },
+        {
+            "userId": "47550895344489678912",
+            "username": "Giacomo",
+            "email": "gia@gmail.it",
+            "password": "stra63",
+            "collaborators": []
         }
     ]
 }

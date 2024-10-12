@@ -1,0 +1,193 @@
+body {
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #b272e3, #1c07b9); /* Sfondo coerente */
+  color: #fff;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.1); /* Trasparenza per un look moderno */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  width: 100%;
+}
+
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: rgba(197, 228, 255, 0.2); /* Colore modificato per coerenza */
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Trasparenza coerente */
+  text-align: center;
+  display: none; /* Nascondi il messaggio di default */
+}
+
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+
+.user-info {
+  margin-bottom: 40px;
+  background-color: rgba(255, 255, 255, 0.15); /* Colore leggero e trasparente */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Trasparenza e bordo morbido */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+.user-info strong {
+  color: #fff;
+}
+
+h2 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 24px;
+  border-bottom: 2px solid #6c43c5; /* Viola chiaro per distinzione */
+  padding-bottom: 10px;
+}
+
+.collaborator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.collaborator-card {
+  background-color: rgba(34, 24, 183, 0.8); /* Viola scuro trasparente */
+  color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+  text-align: center;
+}
+
+.collaborator-card:hover {
+  transform: translateY(-5px);
+}
+
+.collaborator-card p {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.collaborator-card button {
+  background-color: #ffc107; /* Giallo per contrasti */
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.collaborator-card button:hover {
+  background-color: #e6a200; /* Hover più scuro */
+}
+
+.add-collaborator-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.add-collaborator-button button {
+  background-color: #ff4d4d; /* Rosso per azioni principali */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-collaborator-button button:hover {
+  background-color: #b33c00; /* Hover rosso più scuro */
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .user-info p {
+    font-size: 14px;
+  }
+
+  .collaborator-card p {
+    font-size: 14px;
+  }
+
+  .collaborator-card button {
+    font-size: 14px;
+  }
+
+  .add-collaborator-button button {
+    font-size: 14px;
+  }
+}
+
+/* Header con pulsante logout */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.logout-button {
+  background-color: #ff4d4d; /* Rosso per logout */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
+  margin-left: auto;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.logout-button:hover {
+  background-color: #ff1a1a;
+}
+
+/* Sezione inferiore con flexbox */
+.bottom {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="../static/assessement.css">
+     <script src="../static/assessement.js" defer></script>
+    <title>Contributor Evaluation</title>
+</head>
+<body>
+    <div id="notification" class="hidden"></div>
+    <div class="container">
+        <h2>Contributor Evaluation</h2>
+        <form action="/analyze" method="POST">
+            <input type="hidden" name="collaboratorId" value="{{collaboratorId}}">
+            <table>
+                <tr>
+                    <th>Criteria</th>
+                    <th>Strongly Disagree</th>
+                    <th>Disagree</th>
+                    <th>Neutral</th>
+                    <th>Agree</th>
+                    <th>Strongly Agree</th>
+                </tr>
+                <tr>
+                    <td>The contributor has insufficient communication with the team</td>
+                    <td><input type="radio" name="ans1" value="strDis"></td>
+                    <td><input type="radio" name="ans1" value="dis"></td>
+                    <td><input type="radio" name="ans1" value="neutral"></td>
+                    <td><input type="radio" name="ans1" value="agree"></td>
+                    <td><input type="radio" name="ans1" value="strAgree"></td>
+                </tr>
+                <tr>
+                    <td>The contributor does not take into account the activities of other team members</td>
+                    <td><input type="radio" name="ans2" value="strDis"></td>
+                    <td><input type="radio" name="ans2" value="dis"></td>
+                    <td><input type="radio" name="ans2" value="neutral"></td>
+                    <td><input type="radio" name="ans2" value="agree"></td>
+                    <td><input type="radio" name="ans2" value="strAgree"></td>
+                </tr>
+                <tr>
+                    <td>The contributor has an unwillingness to accept help or support from peers</td>
+                    <td><input type="radio" name="ans3" value="strDis"></td>
+                    <td><input type="radio" name="ans3" value="dis"></td>
+                    <td><input type="radio" name="ans3" value="neutral"></td>
+                    <td><input type="radio" name="ans3" value="agree"></td>
+                    <td><input type="radio" name="ans3" value="strAgree"></td>
+                </tr>
+                <tr>
+                    <td>The contributor refuses to listen to the ideas or opinions of peers</td>
+                    <td><input type="radio" name="ans4" value="strDis"></td>
+                    <td><input type="radio" name="ans4" value="dis"></td>
+                    <td><input type="radio" name="ans4" value="neutral"></td>
+                    <td><input type="radio" name="ans4" value="agree"></td>
+                    <td><input type="radio" name="ans4" value="strAgree"></td>
+                </tr>
+                <tr>
+                    <td>The contributor hoards critical knowledge and does not share it</td>
+                    <td><input type="radio" name="ans5" value="strDis"></td>
+                    <td><input type="radio" name="ans5" value="dis"></td>
+                    <td><input type="radio" name="ans5" value="neutral"></td>
+                    <td><input type="radio" name="ans5" value="agree"></td>
+                    <td><input type="radio" name="ans5" value="strAgree"></td>
+                </tr>
+                <tr>
+                    <td>The contributor does not communicate effectively with other peers</td>
+                    <td><input type="radio" name="ans6" value="strDis"></td>
+                    <td><input type="radio" name="ans6" value="dis"></td>
+                    <td><input type="radio" name="ans6" value="neutral"></td>
+                    <td><input type="radio" name="ans6" value="agree"></td>
+                    <td><input type="radio" name="ans6" value="strAgree"></td>
+                </tr>
+            </table>
+            <button type="submit">Submit Evaluation</button>
+        </form>
+        <!-- Pulsante per tornare alla home -->
+        <button class="back-home-button" onclick="location.href='/profile'">Back to Home</button>
+    </div>
+</body>
+</html>

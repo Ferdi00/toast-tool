@@ -1,0 +1,127 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #b272e3, #1c07b9); /* Gradient per coerenza */
+  margin: 0;
+  padding: 20px;
+  color: #fff;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.1); /* Sfondo trasparente per coerenza */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #fff; /* Colore del testo coerente */
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table, th, td {
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Bordo leggero e trasparente */
+}
+
+th, td {
+  padding: 15px;
+  text-align: center;
+  color: #fff; /* Colore del testo coerente */
+}
+
+th {
+  font-weight: bold;
+}
+
+th:nth-child(1) {
+  background-color: #6c43c5; /* Grigio violaceo */
+}
+
+th:nth-child(2) {
+  background-color: #c158b8; /* Rosso violaceo */
+}
+
+th:nth-child(3) {
+  background-color: #ffaa00; /* Arancione */
+}
+
+th:nth-child(4) {
+  background-color: #ffeb3b; /* Giallo */
+  color: #000;
+}
+
+th:nth-child(5) {
+  background-color: #8bc34a; /* Verde chiaro */
+}
+
+th:nth-child(6) {
+  background-color: #4caf50; /* Verde scuro */
+}
+
+td input[type="radio"] {
+  accent-color: #7289da; /* Blu Discord coerente */
+  cursor: pointer;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #17861b; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: #15bd1b
+}
+
+.back-home-button {
+  background-color: #ab1d1d; 
+  margin-top: 10px;
+}
+
+.back-home-button:hover {
+  background-color: #d01616; 
+}
+
+/* Notifiche */
+#notification {
+  padding: 15px;
+  margin: 20px auto;
+  display: none;
+  border-radius: 5px;
+  font-weight: bold;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 80%;
+}
+
+#notification.success {
+  background-color: #4caf50; /* Verde per successo */
+  color: white;
+}
+
+#notification.error {
+  background-color: #f44336; /* Rosso per errore */
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+

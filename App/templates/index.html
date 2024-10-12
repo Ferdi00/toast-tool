@@ -1,27 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login with Discord</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        .login-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            color: white;
-            background-color: #7289da;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Home Page - Login</title>
+    <link rel="stylesheet" href="../static/index.css">
+    <script src="../static/index.js" defer></script>
 </head>
 <body>
-    <h1>Login to Your Account</h1>
-    <a class="login-button" href="/login">Login with Discord</a>
+    <!-- Main header with logo -->
+    <header>
+        <img src="../static/logo.png" alt="Site Logo" class="logo">
+        <h1>Welcome to Our Website</h1>
+        <p>Your gateway to amazing experiences. Log in or sign up to get started!</p>
+    </header>
+
+    <!-- Notification for login/register success or error -->
+    <div id="notification" class="hidden"></div>
+
+    <!-- Login Container -->
+    <div id="login-container" class="container active">
+        <h2>Login to Your Account</h2>
+        <form id="login-form" action="/standard_login" method="post">
+            <label for="uname"><b>Email</b></label>
+            <input type="email" placeholder="Enter Email" name="email" required>
+    
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+        <a class="discord-button" href="/discord_login">Login with Discord</a> 
+        <button class="switch-button" onclick="switchToRegister()">Don't have an account? Sign up</button>
+    </div>
+
+    <!-- Register Container -->
+    <div id="register-container" class="container">
+        <h2>Create a New Account</h2>
+        <form id="register-form">
+            <label for="reg_uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="reg_uname" required>
+
+            <label for="reg_email"><b>Email</b></label>
+            <input type="email" placeholder="Enter Email" name="reg_email" required>
+    
+            <label for="reg_psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="reg_psw" required>
+    
+            <label for="confirm_psw"><b>Confirm Password</b></label>
+            <input type="password" placeholder="Confirm Password" name="confirm_psw" required>
+            <br>
+            <button type="submit">Sign Up</button>
+        </form>
+        <br>
+        <button class="switch-button" onclick="switchToLogin()">Already have an account? Login</button> 
+    </div>
+
+    
 </body>
 </html>

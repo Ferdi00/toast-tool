@@ -1,0 +1,156 @@
+body {
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #b272e3, #1c07b9);
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.login-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #7289da;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 20rem;
+  display: none;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.container.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Input fields default styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #a57ae0;  /* Softer border color */
+  background: rgba(255, 255, 255, 0.15); /* Light purple background */
+  color: #dedada;
+  border-radius: 5px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* On focus, maintain harmony */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #e09eff; /* Lighter purple on focus */
+  background: rgba(255, 255, 255, 0.25); /* Slightly lighter background on focus */
+  outline: none;
+  color: #fff;
+}
+
+/* Ensure input colors don't change when filled */
+input[type="text"]:valid,
+input[type="email"]:valid,
+input[type="password"]:valid {
+  background: rgba(255, 255, 255, 0.25); /* Maintain background when filled */
+  border-color: #a57ae0; /* Keep border harmonious */
+  color: #fff; /* Keep text color white */
+}
+
+/* Button styling */
+button,
+.login-button {
+  background-color: #c158b8;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 90%;
+  border-radius: 5px;
+}
+
+.discord-button {
+  background-color: #373436;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 70%;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Switch button for toggling between login and register */
+.switch-button {
+  background-color: #f1f1f1;
+  color: black;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.switch-button:hover {
+  background-color: #ddd;
+}
+
+/* Notifications */
+#notification {
+  padding: 15px;
+  margin: 20px 0;
+  display: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#notification.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+#notification.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+#login-form, #register-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Cambia il colore del testo placeholder */
+input::placeholder {
+  color: #d3c4e3; /* Colore personalizzato per il placeholder */
+  opacity: 1; /* Imposta l'opacità al massimo, alcuni browser la impostano più bassa di default */
+}

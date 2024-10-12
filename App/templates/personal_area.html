@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Area</title>
+    <link rel="stylesheet" href="../static/personal.css">
+    <script src="../static/personal.js" defer></script> 
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="message" class="message">{{message}}</div>
+
+        <header><h1>Welcome to Your Personal Area</h1>
+         <a href="/logout" class="logout-button" style="margin-left: auto;">Logout</a>
+        </header>
+        
+
+        <div class="user-info">
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Username:</strong> {{username}}</p>
+            <p><strong>Id:</strong> {{userid}}</p>
+        </div>
+
+        <h2>Your Collaborators:</h2>
+        <div id="collaborators-list" class="collaborator-grid">
+        </div>
+
+        <section class="bottom">
+            <div class="add-collaborator-button">
+                <form action="/newCollaboratorPage" method="POST">
+                    <button type="submit">Add New Collaborator</button>
+                </form>
+            </div>
+            
+                <div class="add-collaborator-button">
+                    <form action="/removeCollaborator" method="POST">
+                        <button type="submit">Remove Collaborator</button>
+                    </form>
+                </div>
+        
+        </section>
+        
+    </div>
+
+</body>
+
+</html>
