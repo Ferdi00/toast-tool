@@ -488,7 +488,7 @@ app.post("/saveCollaboratorAPI", (req, res) => {
   }
   // Funzione per validare il token
   if (!validateAuthToken(token)) { 
-    return res.status(401).json({ success: false, message: "Autenticazione richiesta" });
+    return res.status(401).json({ error: "Authentication required" });
   }
   // Verifica che tutti i parametri siano stati ricevuti
   if (!userId || !collaboratorId || !name || !surname || !token) {
