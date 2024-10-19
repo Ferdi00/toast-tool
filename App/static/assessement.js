@@ -5,12 +5,23 @@ document.addEventListener("DOMContentLoaded", function () {
   evaluationForm.addEventListener("submit", async function (event) {
     event.preventDefault(); // Previene la sottomissione del form
 
-    const formData = new FormData(evaluationForm);
+    // Raccogli i dati dal form
+    const formData = {
+      ans1: document.querySelector('input[name="ans1"]:checked')?.value,
+      ans2: document.querySelector('input[name="ans2"]:checked')?.value,
+      ans3: document.querySelector('input[name="ans3"]:checked')?.value,
+      ans4: document.querySelector('input[name="ans4"]:checked')?.value,
+      ans5: document.querySelector('input[name="ans5"]:checked')?.value,
+      ans6: document.querySelector('input[name="ans6"]:checked')?.value,
+    };
 
     try {
       const response = await fetch("/analyze", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {

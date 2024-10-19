@@ -81,7 +81,6 @@ passport.use(
 
 // Debugging della risposta per capire cosa va storto
 function parseErrorResponse(body, status) {
-  console.log("Errore durante il parsing della risposta:", body);
   return OAuth2Strategy.prototype.parseErrorResponse.call(this, body, status);
 }
 
@@ -213,21 +212,14 @@ app.post("/analyzeCollaboratorAPI", (req, res) => {
   ];
 
 
-
-  // Verifica se almeno uno dei campi è undefined
-  if (customIds.some((field) => field === undefined || field === "")) {
+  // Verifica se almeno uno dei campi è undefined, null, o vuoto
+  if (customIds.some((field) => !field || !smellValues.includes(field))) {
     return res
       .status(400)
-      .json({ error: "Not all fields have been filled out correctly" });
-  }
-
-  // Verifica il formato dei campi
-  for (let index = 0; index < customIds.length; index++) {
-    if (!smellValues.includes(customIds[index])) {
-      return res
-        .status(400)
-        .json({ error: "Invalid format for one or more fields" });
-    }
+      .json({
+        error:
+          "Not all fields have been filled out correctly or have invalid values",
+      });
   }
 
   // Creazione della mappa per simulare le interazioni
@@ -284,6 +276,13 @@ app.post("/analyze", (req, res) => {
             smells[i].smellValue
           );
         }
+
+         for (let i = 0; i < smells.length; i++) {
+           modifiedData = modifiedData.replace(
+             `{{r${i + 1}}}`,
+             smells[i].smellValue
+           );
+         }
 
         res.send(modifiedData);
       });

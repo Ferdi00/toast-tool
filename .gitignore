@@ -2,3 +2,4 @@
 node_modules
 .Rproj.userenv
 .env
+/App/users.json

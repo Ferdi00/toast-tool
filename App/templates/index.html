@@ -10,10 +10,13 @@
 <body>
     <!-- Main header with logo -->
     <header>
-        <img src="../static/logo.png" alt="Site Logo" class="logo">
-        <h1>Welcome to Our Website</h1>
-        <p>Your gateway to amazing experiences. Log in or sign up to get started!</p>
-    </header>
+    <img src="../static/logo.svg" alt="Site Logo" class="logo">
+    <div class="title">
+        <p class="t-large">T</p>
+        <h1>.O.A.S.T</h1>
+    </div>
+    <h3 class="slogan">Analyze, Discover, Correct</h3>
+</header>
 
     <!-- Notification for login/register success or error -->
     <div id="notification" class="hidden"></div>
@@ -30,7 +33,10 @@
             <br>
             <button type="submit">Login</button>
         </form>
-        <a class="discord-button" href="/discord_login">Login with Discord</a> 
+        <a class="discord-button" href="/discord_login">
+        <img src="../static/discord.svg" alt="Discord Icon" class="discord-icon">
+        Login with Discord
+        </a>
         <button class="switch-button" onclick="switchToRegister()">Don't have an account? Sign up</button>
     </div>
 
