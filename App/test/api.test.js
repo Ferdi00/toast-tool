@@ -49,7 +49,9 @@ describe("User Response Analysis API Tests", () => {
       await axios.post(`${apiBaseURL}/analyzeCollaboratorAPI`, incompleteResponses);
     } catch (error) {
       expect(error.response.status).toBe(400);
-      expect(error.response.data.error).toBe("Not all fields have been filled out correctly");
+      expect(error.response.data.error).toBe(
+        "Not all fields have been filled out correctly or have invalid values"
+      );
     }
   });
 
@@ -60,15 +62,17 @@ describe("User Response Analysis API Tests", () => {
       await axios.post(`${apiBaseURL}/analyzeCollaboratorAPI`, invalidData);
     } catch (error) {
       expect(error.response.status).toBe(400);
-      expect(error.response.data.error).toBe("Not all fields have been filled out correctly");
+      expect(error.response.data.error).toBe(
+        "Not all fields have been filled out correctly or have invalid values"
+      );
     }
   });
 });
 
 const loginData = {
-  email: "user_1727451906042@prova.it",
-  psw: "user1",
- };
+  email: "marioRisi@gmail.com",
+  psw: "12349087",
+};
 
 //API per l'aggiunta dei collaboratori 
 it("should add a new collaborator correctly (TC-ADD.1)", async () => {
@@ -175,7 +179,7 @@ it("TC-AUTH.1 - should authenticate user with valid credentials", async () => {
 
   const response = await axios.post(`${apiBaseURL}/api/auth`, loginData);
   expect(response.status).toBe(200);
-  expect(response.data.id).toEqual("15708552304870033094");
+  expect(response.data.id).toEqual("d5eca240b5a7bd21ee42");
 });
 
 it("TC-AUTH.2 - should return an error when password is missing", async () => {

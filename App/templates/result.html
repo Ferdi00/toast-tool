@@ -3,66 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/result.css">
     <title>Community Smells Report</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        h2 {
-            text-align: center;
-            color: #333333;
-            margin-bottom: 30px;
-        }
-        .smell-container {
-            margin-bottom: 20px;
-        }
-        .smell-title {
-            font-weight: bold;
-            color: #555555;
-            margin-bottom: 5px;
-        }
-        .bar {
-            height: 25px;
-            border-radius: 5px;
-        }
-        .value {
-            font-size: 14px;
-            color: #333333;
-            text-align: right;
-            padding-right: 10px;
-            position: relative;
-            top: -25px;
-            right: -5px;
-        }
-        .home-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            text-align: center;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-        .home-button:hover {
-            background-color: #5a6268;
-        }
-    </style>
 </head>
 <body>
     <div class="container">

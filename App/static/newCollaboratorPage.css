@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -106,4 +107,23 @@ h1 {
 input::placeholder {
   color: #d3c4e3; /* Colore personalizzato per il placeholder */
   opacity: 1; /* Imposta l'opacità al massimo, alcuni browser la impostano più bassa di default */
+}
+
+/* Notifications */
+#notification {
+  padding: 15px;
+  margin: 20px 0;
+  display: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#notification.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+#notification.error {
+  background-color: #f44336;
+  color: white;
 }

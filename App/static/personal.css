@@ -65,19 +65,22 @@ h2 {
 }
 
 .collaborator-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px; 
 }
 
 .collaborator-card {
-  background-color: rgba(34, 24, 183, 0.8); /* Viola scuro trasparente */
+  background-color: rgba(34, 24, 183, 0.8);
   color: #fff;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease-in-out;
   text-align: center;
+  flex: 1 1 calc(33.33% - 10px); 
+  min-width: 100px;
+  max-width: 180px;
 }
 
 .collaborator-card:hover {
@@ -190,4 +193,23 @@ header {
   flex-direction: row;
   justify-content: center;
   gap: 2rem;
+}
+
+/* Notifications */
+#notification {
+  padding: 15px;
+  margin: 20px 0;
+  display: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#notification.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+#notification.error {
+  background-color: #f44336;
+  color: white;
 }

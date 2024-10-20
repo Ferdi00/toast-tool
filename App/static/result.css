@@ -1,0 +1,72 @@
+body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #b272e3, #1c07b9);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .smell-container {
+            margin-bottom: 20px;
+        }
+        .smell-title {
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .bar {
+            height: 25px;
+            border-radius: 5px;
+        }
+        .value {
+            font-size: 14px;
+            color: #fff;
+            text-align: right;
+            padding-right: 10px;
+            position: relative;
+            top: -25px;
+            right: -5px;
+        }
+        .lone-wolf {
+            background-color: #4CAF50; /* Verde per il primo tipo di smell */
+        }
+        .prima-donna {
+            background-color: #FF5722; /* Arancione per il secondo tipo di smell */
+        }
+        .black-cloud {
+            background-color: #2196F3; /* Blu per il terzo tipo di smell */
+        }
+        .home-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #ff4d4d; /* Rosso per azioni principali */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .home-button:hover {
+            background-color: #b33c00;
+        }

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/newCollaboratorPage.css">
+    <script src="../static/newCollaboratorPage.js" defer></script> 
     <title>Add New Collaborator</title>
 </head>
 
@@ -13,7 +14,7 @@
     <div class="container">
         <h1>Add New Collaborator</h1>
 
-        <form class="collaborator-form" method="POST" action="/addCollaborator">
+        <form class="collaborator-form" id="addCollaboratorForm" method="POST" action="/addCollaborator">
             <input type="text" id="collaboratorId" name="collaboratorId" placeholder="Collaborator ID" required>
             <input type="text" id="name" name="name" placeholder="Name" required>
             <input type="text" id="surname" name="surname" placeholder="Surname" required>
