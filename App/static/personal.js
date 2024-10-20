@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch("/getCollaborators")
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Errore nel recupero dei collaboratori");
+        throw new Error("Error in recovering collaborators");
       }
       return response.json();
     })
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
-      showNotification("Errore durante il caricamento dei collaboratori", "error");
+      showNotification("Error loading collaborators", "error");
     });
 });
 
@@ -54,7 +54,7 @@ document.getElementById("logout-btn").addEventListener("click", function () {
       "Content-Type": "application/json",
     },
   }).catch((error) => {
-    showNotification("Errore durante il logout", "error");
+    showNotification("Error during logout", "error");
   });
 });
 

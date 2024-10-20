@@ -32,19 +32,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.ok) {
           // Gestiamo la risposta di successo
           const result = await response.json();
-          showNotification("Collaboratore aggiunto con successo!", "success");
+          showNotification("Collaborator added successfully!", "success");
         } else {
           // Gestiamo la risposta di errore
           const errorResponse = await response.json();
           showNotification(
-            errorResponse.error ||
-              "Errore durante l'aggiunta del collaboratore",
+            errorResponse.error || "Error adding collaborator",
             "error"
           );
         }
       } catch (error) {
         // Gestiamo gli errori di rete
-        showNotification("Errore durae la richiesta", "error");
+        showNotification("Error during request", "error");
       } finally {
         isAddingCollaborator = false;
       }

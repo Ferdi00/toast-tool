@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Verifica se le password coincidono
     if (body.password !== body.confirmPassword) {
-      showNotification("Le password non coincidono", "error");
+      showNotification("The passwords do not match", "error");
       return;
     }
 
@@ -45,16 +45,16 @@ document.addEventListener("DOMContentLoaded", function () {
       const result = await response.json();
 
       if (response.ok) {
-        showNotification("Registrazione avvenuta con successo!", "success");
+        showNotification("Registration successful!", "success");
         registerForm.reset(); // Reset del form
       } else {
         showNotification(
-          result.error || "Errore durante la registrazione",
+          result.error || "Registration error",
           "error"
         );
       }
     } catch (error) {
-      showNotification("Errore durante la richiesta", "error");
+      showNotification("Error during request", "error");
     }
   });
 
@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = result.redirectUrl;
       } else {
         // Se c'è un errore, mostra la notifica
-        showNotification(result.error || "Errore durante il login", "error");
+        showNotification(result.error || "Login error", "error");
       }
     } catch (error) {
-      showNotification("Errore durante la richiesta", "error");
+      showNotification("Error during request", "error");
     }
   });
 
