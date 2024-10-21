@@ -34,6 +34,7 @@ const {
 const app = express();
 const port = process.env.PORT || 3000;
 dotenv.config();
+const serverURL = process.env.SERVER_URL || "http://localhost:3000";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -260,7 +261,7 @@ app.post("/analyzeCollaboratorAPI", (req, res) => {
 
 app.post("/analyze", (req, res) => {
   axios
-    .post("http://localhost:3000/analyzeCollaboratorAPI", req.body)
+    .post(`${serverURL}/analyzeCollaboratorAPI`, req.body)
     .then((response) => {
       if (response.status !== 200) {
         console.log("Errore in analyze:", response.error);
@@ -486,7 +487,7 @@ app.post("/addCollaborator", ensureAuthenticated, (req, res) => {
   }
 
   axios
-    .post("http://localhost:3000/saveCollaboratorAPI", req.body)
+    .post(`${serverURL}/saveCollaboratorAPI`, req.body)
     .then((response) => {
       // Success response, return JSON to client
       res.json({
@@ -549,6 +550,6 @@ function ensureAuthenticated(req, res, next) {
 // -------------------- START SERVER --------------------
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on ${serverURL}`);
   startBot(); // Start the Discord bot
 });
